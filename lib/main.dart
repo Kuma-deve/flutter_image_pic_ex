@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: HomePage(),
+      home: const HomePage(),
     );
   }
 }
@@ -35,11 +35,12 @@ class _HomePageState extends State<HomePage> {
       create: (_) => CameraModel()..fetchWidget(),
       child: Scaffold(
         body: Consumer<CameraModel>(builder: (context, model, child) {
-          return ListView.builder(
-            itemCount: model.list.length,
-            itemBuilder: (BuildContext context, int index) {
-              return model.list[index];
-            },
+          return GridView.extent(
+            maxCrossAxisExtent: 200.0,
+            mainAxisSpacing: 10.0,
+            crossAxisSpacing: 10.0,
+            padding: const EdgeInsets.all(10.0),
+            children: model.widget_list,
           );
         }),
       ),

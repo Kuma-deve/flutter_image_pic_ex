@@ -11,40 +11,41 @@ class Photo {
 }
 
 class CameraModel extends ChangeNotifier {
-  File? imageFile;
+  var imageFile;
   Uint8List webImage = Uint8List(10);
   final picker = ImagePicker();
-  var list = <Widget>[];
+  var widget_list = <Widget>[];
   List? url;
 
   void fetchWidget() {
-    list.add(
-      Container(
-        width: 150,
-        height: 150,
-        color: Colors.blue,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: InkWell(
-                child: const SizedBox(
+    widget_list.add(
+      InkWell(
+        onTap: () async {
+          await pickImage();
+        },
+        child: Container(
+          width: 150,
+          height: 150,
+          color: Colors.blue,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const [
+              Padding(
+                padding: EdgeInsets.all(8.0),
+                child: SizedBox(
                   width: 100,
                   child: Icon(Icons.add_outlined),
                 ),
-                onTap: () async {
-                  await pickImage();
-                },
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
 
-  //listというwidgetのリストを作る
+  //widget_listというwidgetのリストを作る
   //画面初期化
   Future pickImage() async {
     if (!kIsWeb) {
@@ -53,8 +54,7 @@ class CameraModel extends ChangeNotifier {
 
       if (pickedFile != null) {
         imageFile = File(pickedFile.path);
-        //url!.add(imageFile!.path);
-        list.add(
+        widget_list.add(
           Image.file(imageFile!),
         );
         notifyListeners();
@@ -64,11 +64,9 @@ class CameraModel extends ChangeNotifier {
       XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery);
       if (pickedFile != null) {
         var f = await pickedFile.readAsBytes();
-        imageFile = File("web");
-        webImage = f;
-        //url!.add(webImage);
-        list.add(
-          Image.memory(webImage),
+        imageFile = f;
+        widget_list.add(
+          Image.memory(imageFile),
         );
         notifyListeners();
       }
